@@ -57,7 +57,7 @@ class WeatherRequestForm extends Model
         $this->description = ArrayHelper::getValue($weather, 'description');
         $this->icon = ArrayHelper::getValue($weather, 'icon').'.png';
         $this->humidity = ArrayHelper::getValue($main, 'humidity');
-        $this->pressure = (float) ArrayHelper::getValue($main, 'pressure') / self::PRESSURE_K;
+        $this->pressure = (int) ArrayHelper::getValue($main, 'pressure') / self::PRESSURE_K;
         $this->temp = ArrayHelper::getValue($main, 'temp');
         $this->windSpeed = ArrayHelper::getValue($wind, 'speed');
         $this->windDirection = Weather::getDirection((int) ArrayHelper::getValue($wind, 'deg'));
