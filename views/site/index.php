@@ -1,53 +1,42 @@
 <?php
 
+use app\models\WeatherRequestForm;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+
+
 /* @var $this yii\web\View */
+/* @var $model WeatherRequestForm */
+/* @var $message string */
 
-$this->title = 'My Yii Application';
+$this->title = 'Weather';
 ?>
-<div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+<?php $form = ActiveForm::begin(['action' => Url::to('/site/weather')]) ?>
+<?= $form->field($model, 'city')->label('Введите город') ?>
+<?= Html::submitButton('Проверить погоду', ['class' => 'btn btn-success']) ?>
+<?php ActiveForm::end() ?>
+<?php if ($model->status === WeatherRequestForm::STATUS_FULL): ?>
+    <div class="row">
+        <div class="col-xs-3"><img src="<?= WeatherRequestForm::ICON_URL.$model->icon ?>"/><?= $model->description ?></div>
     </div>
-
-    <div class="body-content">
-
+    <div class="row">
+        <div class="col-xs-3">Температура: <?= $model->temp ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Влажность: <?= $model->humidity ?>%</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Давление: <?= $model->pressure ?></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-3">Скорость ветра: <?= $model->windSpeed ?></div>
+    </div>
+    <?php if ($model->windDirection): ?>
         <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
+            <div class="col-xs-3">Ветер: <?= $model->windDirection ?></div>
         </div>
-
-    </div>
-</div>
+    <?php endif; ?>
+<?php else: ?>
+<h3>Ошибка: <?=$message?></h3>
+<?php endif; ?>
